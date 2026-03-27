@@ -6,6 +6,9 @@ on:
     paths:
       - 'data/static/challenges.yml'
 
+permissions:
+  contents: write
+
 jobs:
   UpdateChallengesOnWebsite:
     if: github.repository == 'juice-shop/juice-shop'

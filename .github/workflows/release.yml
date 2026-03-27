@@ -3,10 +3,14 @@ on:
   push:
     tags:
       - v*
+permissions:
+  contents: read
 env:
   CYCLONEDX_NPM_VERSION: '^2.0.0||^3.0.0'
 jobs:
   package:
+    permissions:
+      contents: write
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
