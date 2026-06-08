@@ -16,11 +16,12 @@ export function profileImageUrlUpload () {
       const loggedInUser = security.authenticatedUsers.get(req.cookies.token)
       if (loggedInUser) {
         try {
-          const parsedUrl = new URL(url, 'https://')
+          const parsedUrl = new URL(url)
           if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
             throw new Error('Invalid profile image URL protocol')
           }
-          await UserModel.findByPk(loggedInUser.data.id).then(async (user: UserModel | null) => { return await user?.update({ profileImage: parsedUrl.href }) }).catch((error: Error) => { next(error) })
+          const user = await UserModel.findByPk(loggedInUser.data.id)
+          await user?.update({ profileImage: parsedUrl.href })
         } catch (error) {
           next(error)
           return
