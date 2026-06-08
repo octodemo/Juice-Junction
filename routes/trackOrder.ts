@@ -12,7 +12,8 @@ import { challenges } from '../data/datacache'
 export function trackOrder () {
   return (req: Request, res: Response) => {
     // Sanitize id to avoid NoSQL injection
-    const id = String(req.params.id).replace(/[^\w-]+/g, '')
+    const rawId = req.params.id
+    const id = typeof rawId === 'string' ? rawId.replace(/[^\w-]+/g, '') : ''
 
     challengeUtils.solveIf(challenges.reflectedXssChallenge, () => { return utils.contains(id, '<iframe src="javascript:alert(`xss`)">') })
     db.ordersCollection.find({ orderId: id }).then((order: any) => {

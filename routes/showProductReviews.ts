@@ -29,6 +29,10 @@ export function showProductReviews () {
   return (req: Request, res: Response, next: NextFunction) => {
     // Parse id as a number to prevent NoSQL injection
     const id = Number(req.params.id)
+    if (isNaN(id)) {
+      res.status(400).json({ error: 'Invalid product id' })
+      return
+    }
 
     // Measure how long the query takes, to check if there was a nosql dos attack
     const t0 = new Date().getTime()
